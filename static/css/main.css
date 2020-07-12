@@ -1,0 +1,130 @@
+body, html{
+  height: 100%;
+  margin: 0;
+}
+
+.bg{
+  background-image: url("/static/images/solar-panel.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: auto;
+}
+
+.bg h3{
+  margin-left: 10%;
+  padding-top: 5%;
+  color: black;
+  font-size: 1.6rem;
+  font-weight: bolder;
+  letter-spacing: 0.3rem;
+  color: #111111;
+}
+
+.bg h1{
+  margin-left: 10%;
+  padding-top: 0px;
+  margin-top: 0px;
+  color: white;
+  font-family: "montserrat-medium", sans-serif;
+  font-size: 6.3rem;
+}
+
+@media screen and (max-width: 1500px){
+  .bg h1{
+    font-size: 6rem;
+  }
+  .bg h3{
+    font-size: 1.2rem;
+  }
+  .bg .link{
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .bg h1{
+    font-size: 5.5rem;
+  }
+  .bg h3{
+    font-size: 1.0rem;
+  }
+  .bg .link{
+    font-size: 1.0rem;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .bg h1{
+    font-size: 4.6rem;
+  }
+  .bg h3{
+    font-size: 0.9rem;
+  }
+  .bg .link{
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .bg h1{
+    font-size: 4rem;
+  }
+  .bg .link{
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .bg h1{
+    font-size: 3.8rem;
+  }
+  .bg .link{
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .bg h1{
+    font-size: 3.5rem;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .bg h1{
+    font-size: 3.3rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .bg h1{
+    font-size: 3.1rem;
+  }
+}
+
+
+.link{
+  border: 2.5px solid black;
+  width: 20%;
+  height: 10vh;
+  background-color: transparent;
+  color: white !important;
+  position: absolute;
+  margin-left: 10%;
+  top: 80%;
+  width: 20%;
+  letter-spacing: 0.25rem;
+  transition: background-color 1s;
+  font-size: 1.3rem;
+}
+
+button:focus{
+  outline: none;
+}
+
+button.link:hover{
+  background-color: black !important;
+  text-decoration: none;
+}

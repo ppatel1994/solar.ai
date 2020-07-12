@@ -1,0 +1,115 @@
+{% extends "menu.html" %}
+
+{% block css %}
+<title>About</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<div class = "header">
+  <h1>About solar.ai</h1>
+  <h2>What's behind the model.</h2>
+</div>
+
+<div class = "motivation">
+  <h3><span>Motivation for solar.ai</span></h3>
+  <div class= "container">
+    <p>One of the main challenges with solar power generation is inconsistency. Photovoltaic (PV) cells capture radiation from the sun and convert into direct current (DC). The reliance on clear skies and sunny days is problematic for generating predictable solar energy return. To address this problem, I developed a regression model to forecast 3 day solar irradiance for any location in the world using meteorological data. The predicted solar irradiance can be used to predict solar power using various numerical techniques dependent on the panel.</p>
+  </div>
+</div>
+
+<div class = "data">
+  <h3><span>Where the data came from</span></h3>
+  <div class = "container">
+    <p>The HI-SEAS weather station collected meteorological data from four months (September through December 2016).
+    Solar radiation and weather data is available every 5 minutes, totaling 32,686 data points.
+    The available meteorological data are: <p>
+      <ul>
+        <li>Solar irradiance (W/m<sup>2</sup>)</li>
+        <li>Temperature (F)</li>
+        <li>Humidity (%)</li>
+        <li>Barometric Pressure (Hg)</li>
+        <li>Wind direction (degrees)</li>
+        <li>Wind speed (mph)</li>
+        <li>Sunrise/sunset (HST)</li>
+      </ul>
+  </div>
+</div>
+
+<div class = "exploratory">
+  <h3><span>Exploratory data analysis</span></h3>
+  <div class= "container">
+    <h4>Data Cleaning</h4>
+    <p>There are already numerous kernels predicting the 5-minute solar irradiance. Instead, I decided to predict the total daily solar irradiance by grouping the data into 127 days. Accordingly, the following manipulations were applied to each column:</p>
+    <ul>
+      <li>Solar irradiance: Sum</li>
+      <li>Temperature: Max</li>
+      <li>Humidity: Max</li>
+      <li>Pressure: Max</li>
+      <li>Wind direction: Mean</li>
+      <li>Wind speed: Max</li>
+      <li>Sunrise/sunset: Mode</li>
+    </ul>
+    <p>Additionally, I added another feature for day of year and combined the time sun set and time sun rise into a feature for day length. Below are plots of solar radiation and features over the 127 days.</p>
+    <img src="{{url_for('static', filename = 'images/radiation_time.png')}}">
+    <img src="{{url_for('static', filename = 'images/features_time.png')}}">
+    <h4>Feature Selection</h4>
+    <div class = "row">
+      <div class = "column">
+        <img src="{{url_for('static', filename = 'images/features_radiation.png')}}">
+      </div>
+      <div class = "column">
+        <img src="{{url_for('static', filename = 'images/corr.png')}}">
+      </div>
+    </div>
+    <p>Correlation scatter plots and ranking for all features. Not surprisingly, solar irradiance is highly correlated with temperature and inversely proportional to humidity.
+      Interestingly, wind direction is the second most correlated feature. As the wind direction shifts from NE to NW, we expect the daily solar irradiance to decrease. Wind speed has little influence on daily solar irradiance.
+</div>
+
+<div class = "models">
+  <h3><span>Model building and selection</span></h3>
+  <div class = "container">
+    <p>Due to the lack of available daily data, I used leave-one-out cross validation to obtain an unbiased estimation of the RMSE to compare the performances of different models.
+    As a naive baseline model, I used past predicts future, which predicts today's solar irradiance based on yesterday's. After evaluating results through recursive feature selection and feature importance by random forest,
+    I found that the random forest model using all features does not perform significantly better than the one using the subset of temperature, wind direction and day of year. The RMSE of PPF, single variable (temperature), multivariable,
+    and random forest (temperature, wind direction, and day of year) are shown in the table below. Time series plots of models fitted to the full data are also shown.</p>
+  </div>
+  <div id = "table" class = "container">
+    <table>
+      <tr>
+        <th>Model</th>
+        <th>Test RMSE (W/m<sup>2</sup>)</th>
+        <th>% of Mean Radiation</th>
+      </tr>
+      <tr>
+        <td>Past Predicts Future</td>
+        <td>19144</td>
+        <td>33</td>
+      </tr>
+      <tr>
+        <td>Single Variable Model</td>
+        <td>14027</td>
+        <td>24</td>
+      </tr>
+      <tr>
+        <td>Multivariate Model</td>
+        <td>12563</td>
+        <td>22</td>
+      </tr>
+      <tr>
+        <td>Random Forest Model</td>
+        <td>11616</td>
+        <td>20</td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <img src="{{url_for('static', filename = 'images/ppf.png')}}">
+    <img src="{{url_for('static', filename = 'images/temp_model.png')}}">
+    <img src="{{url_for('static', filename = 'images/mv_model.png')}}">
+    <img src="{{url_for('static', filename = 'images/rf_model.png')}}">
+  </div>
+</div>
+
+{% endblock %}

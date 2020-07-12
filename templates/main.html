@@ -1,0 +1,17 @@
+{% extends "menu.html" %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<title>Home</title>
+{% endblock %}
+
+{% block content %}
+<div class = "bg">
+  <div>
+    <div>
+      <h3>FORECAST YOUR SOLAR OUTPUT</h3>
+      <h1>Use solar.ai <br> to predict your <br> future renewables generation <br> for advanced planning <br> of electricity demand</h1>
+    </div>
+    <button onclick = "window.location.href= '/forecast';" type="button" name="button" class = "link">VIEW THE APP</button>
+  </div>
+</div>
+{% endblock %}

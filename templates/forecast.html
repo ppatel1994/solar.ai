@@ -1,0 +1,110 @@
+{% extends "menu.html" %}
+{% block css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forecast.css') }}">
+<title>Forecast</title>
+{% endblock %}
+
+{% block content %}
+<div class= "leftBar">
+  <h1>Set your location on the right and click forecast to get your 3-day solar radiation prediction </h1>
+  <form>
+    <input id = "val" type="hidden" name="location" value="">
+    <button id = "forecast" class = "forecast" type="submit" name="button">Forecast</button>
+  </form>
+  <hr>
+  <div class= "predictions">
+    <p id = "day1" class = "val">0</p><p class = "label">kW/m<sup>2</sup></p>
+    <h5></h5>
+    <hr>
+    <p id = "day2" class = "val">0</p><p class = "label">kW/m<sup>2</sup></p>
+    <h5></h5>
+    <hr>
+    <p id = "day3" class = "val">0</p><p class = "label">kW/m<sup>2</sup></p>
+    <h5></h5>
+  </div>
+</div>
+<div id = "mapid">
+</div>
+
+<script type="text/javascript">
+  var map = L.map('mapid', {minZoom: 2}).setView([37.8,-98.6 ], 4);
+    document.body.onload = function loadmap(){
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+   subdomains: 'abcd',
+   maxZoom: 19
+}).addTo(map);
+  };
+
+  var greenIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  var marker = {};
+  map.on('click', function(e){
+    if (marker != undefined){
+      map.removeLayer(marker)
+    }
+    marker = L.marker(e.latlng, {icon: greenIcon}).addTo(map);
+    latitude = Math.floor(e.latlng.lat);
+    longitude = Math.floor(e.latlng.lng);
+    document.getElementById('val').value =
+      JSON.stringify({lat: latitude.toString(), long: longitude.toString()});
+  });
+
+  var now = moment();
+  var today = now.format('MMM Do, YYYY');
+  var tomorrow = now.add(1, 'days').format('MMM Do, YYYY');
+  var day2 = now.add(1, 'days').format('MMM Do, YYYY');
+  var day3 = now.add(1, 'days').format('MMM Do, YYYY');
+  var dates = [tomorrow, day2, day3];
+  var tags = document.getElementsByTagName("h5");
+  for (var i = 0; i < tags.length; i++){
+    tags[i].innerHTML = dates[i];
+  }
+
+  function animateValue(id, start, end, duration) {
+      var range = end - start;
+      var current = start;
+      var increment = 1;
+      var stepTime = Math.abs(Math.floor(duration / range));
+      var obj = document.getElementById(id);
+      var timer = setInterval(function() {
+          current += increment;
+          obj.innerHTML = current;
+          if (current >= end) {
+              clearInterval(timer);
+          }
+      }, stepTime);
+  }
+
+  $(function(){
+    $('#forecast').bind('click', function(){
+      $.getJSON('/predict', {
+        a: $('input[name = "location"]').val()
+      }, function(data){
+        if (data["day1"] == "ERROR"){
+          return;
+        }
+        animateValue("day1", 0, data["day1"], 1000)
+        animateValue("day2", 0, data["day2"], 1000)
+        animateValue("day3", 0, data["day3"], 1000)
+      });
+      return false;
+    })
+  })
+</script>
+{% endblock %}
