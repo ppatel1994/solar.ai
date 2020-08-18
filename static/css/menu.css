@@ -135,3 +135,12 @@ label{
   color: #39b54a;
   margin-left: 30px;
 }
+
+.social-media{
+  padding-top: 30pt;
+}
+
+.social-media > a{
+  display: inline-block;
+  font-size: 25pt;
+}
