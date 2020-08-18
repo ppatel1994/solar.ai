@@ -1,4 +1,4 @@
-html, body, #mapid{
+html, body{
   height: 100%;
   padding: 0;
   margin: 0;
@@ -7,67 +7,83 @@ html, body, #mapid{
 }
 
 #mapid{
-  width: 75%;
+  height: 70%;
+  width: 100%;
   position: absolute;
   top: 0;
-  right: 0;
+  right-side-side: 0;
 }
 
-.leftBar{
-  position:absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 25%;
+.user-block{
+  position: relative;
+  width: 100%;
+  height: 30%;
+  top: 70%;
+  display: flex;
+  align-items: center;
+}
+
+.user-block .instructions{
+  padding: 1%;
+}
+
+.user-block .left-side{
   text-align: center;
+  width: 25%;
 }
 
-.leftBar h1{
-  margin: 10px;
-  color: white;
-  font-size: 2.0rem;
+.user-block .forecast-button{
+  padding: 1%;
 }
 
-.leftBar .forecast{
+.user-block .instructions span{
+  font-size: ;
+}
+
+.btn{
   background-color: black;
   border: 2px solid black;
   height: 30px;
-  width: 85px;
+  width: 100px;
   font-size: 1.1rem;
   letter-spacing: .2rem;
   color: white;
+  text-align: center;
 }
 
-.leftBar .forecast:focus{
+.user-block .btn:focus{
   outline: none;
-}
-
-hr{
-  margin-left: 30px;
-  margin-right: 30px;
-  height: 1px;
-  opacity: 0.3;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.val{
-  font-size: 6.5rem;
-  font-weight: bolder;
   color: white;
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
-.label{
-  font-size: 1.5rem;
+.user-block .btn:hover{
+  color: white;
+}
+
+.user-block .right-side{
+  display: flex;
+  width: 75%;
+  text-align: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.user-block .right-side .day{
+  width: 30%;
+  border-left: 1px solid rgba(210, 215, 211, 1);
+  text-align: center;
+}
+
+.user-block .right-side .day .val{
+  font-size: 6.7rem;
+  font-weight: bold;
+  color: white;
+}
+
+.user-block .right-side .day .date, .label{
+  font-size: 1.1rem;
   color: black;
-}
-
-h5{
-  font-size: 1.2rem;
-  letter-spacing: 0.3rem;
-  font-weight: bolder;
 }
 
 .menu-full .hamburger > div {
@@ -78,47 +94,35 @@ h5{
   color: black;
 }
 
-p span{
-  text-align: center;
-}
-
-@media screen and (max-width: 1200px) {
-  .leftBar h1{
-    font-size: 1.9rem;
-  }
-}
-
-@media screen and (max-width: 1150px){
-  .leftBar h1{
-    font-size: 1.8rem;
-  }
-}
-
-@media screen and (max-width: 1070px){
-  .leftBar h1{
-    font-size: 1.6rem;
-  }
-}
-
-@media screen and (max-width: 800px){
-  .leftBar h1{
-    font-size: 1.4rem;
-  }
-}
-
-@media screen and (max-width: 800px){
-  .leftBar h1{
-    font-size: 1.3rem;
-  }
-}
-
-@media screen and (max-width: 600px){
-  .leftBar h1{
-    font-size: 1.2rem;
+@media only screen and (max-width: 499px){
+  #mapid{
+    height: 40%;
+    width: 100%;
   }
 
-  .leftBar h5{
-    font-size: 1.1rem;
+  .user-block{
+    position: relative;
+    top: 40%;
+    height: 60%;
+    display: block;
   }
 
+  .user-block .left-side{
+    float: left;
+    width: 100%;
+    clear: left;
+  }
+
+  .user-block .right-side{
+    width: 100%;
+    display: block;
+    float: left;
+    clear: left;
+  }
+
+  .user-block .right-side .day{
+    margin:0 auto;
+    border-top: 1px solid rgba(210, 215, 211, 1);
+    border-left: 0;
+  }
 }
